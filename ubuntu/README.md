@@ -15,11 +15,11 @@ docker build -t ubuntu-puppet .
 ## Running the Container
 
 ```bash
-docker run -d -p 22:22 ubuntu-puppet
+docker run -d -p 2222:22 ubuntu-puppet
 ```
 
 The container will start with:
-- SSH server running on port 22
+- SSH server running on port 2222
 - Puppet agent running and managed by supervisor
 - Python 3 available for use
 
