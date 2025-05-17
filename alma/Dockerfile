@@ -14,7 +14,9 @@ RUN dnf -y install epel-release && \
     openssh-server \
     openssh-clients \
     initscripts \
+    passwd \
     wget \
+    ncurses \
     && dnf clean all
 
 # Install Puppet agent

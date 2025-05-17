@@ -15,7 +15,7 @@ docker build -t ubuntu-puppet .
 ## Running the Container
 
 ```bash
-docker run -d -p 2222:22 ubuntu-puppet
+docker run --name target3-d -p 2224:22 ubuntu-puppet
 ```
 
 The container will start with:

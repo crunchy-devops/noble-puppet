@@ -16,6 +16,8 @@ RUN apt-get update && \
     gnupg \
     systemctl \
     lsb-release \
+    vim \
+    iputils-ping \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Puppet agent

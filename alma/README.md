@@ -15,7 +15,7 @@ docker build -t alma9-puppet .
 ## Running the Container
 
 ```bash
-docker run -d -p 22:22 alma9-puppet
+docker run --name target1 -d -p 2222:22 alma-puppet
 ```
 
 The container will start with:

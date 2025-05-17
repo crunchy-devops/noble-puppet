@@ -16,7 +16,7 @@ docker build -t alpine-puppet .
 ## Running the Container
 
 ```bash
-docker run -d -p 2222:22 alpine-puppet
+docker run --name target2 -d -p 2223:22 alpine-puppet
 ```
 
 The container will start with:
