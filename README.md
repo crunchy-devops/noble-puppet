@@ -2,35 +2,57 @@
 
 Noble Puppet is a collection of Dockerfiles for creating containers with Puppet and ssh installed and configured.
 
-## Supported OS
+## install docker and puppetmaster on alma-linux 9
+```shell
+sudo -s
+
+dnf install htop
+vi /etc/sysconfig/selinux
+setenforce 0
+dnf install https://yum.puppet.com/puppet8-release-el-9.noarch.rpm
+dnf install puppetserver
+vim /etc/sysconfig/puppetserver
+hostnamectl set-hostname puppetmaster.citizix.com
+vim /etc/hosts
+hostnamectl
+vim /etc/puppetlabs/puppet/puppet.conf
+systemctl start puppetserver
+systemctl status puppetserver
+puppetserver -v
+# install docker
+dnf update -y
+dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+dnf install docker-ce docker-ce-cli containerd.io
+systemctl start docker
+systemctl enable docker
+usermod -aG docker $USER
+```
+
+## Install Docker on Ubuntu
+```shell
+sudo apt update
+sudo apt install -y curl apt-transport-https ca-certificates software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install docker-ce -y
+sudo systemctl status docker
+sudo usermod -aG docker $USER
+# log out log in again
+docker ps # check
+```
+
+## Containers Supported OS
 
 - AlmaLinux 9
 - Alpine Linux
 - Ubuntu 24.10
 
-## Usage
-
-```bash
-    git clone https://github.com/crunchy-devops/noble-puppet.git
-    cd noble-puppet
-    docker build -t alma9-puppet alma/
-    docker run -d -p 2222:22 alma9-puppet
-```
-## Pre-requisites
-
-portainer 
-```shell
-docker volume create portainer_data
-docker run -d -p 32125:8000 -p 32126:9443 --name portainer --restart=always \
--v /var/run/docker.sock:/var/run/docker.sock \
--v portainer_data:/data portainer/portainer-ce:latest 
-```
-
-## Puppet Master
+## install Puppet Master
 
 ```bash
 sudo apt update -y
-sudo apt install puppet-master
+sudo apt install puppetserver
 sudo tac /etc/default/puppetserver
 sudo grep ARGS /etc/default/puppetserver
 sudo grep 1g /etc/default/puppetserver
@@ -48,27 +70,45 @@ docker run -d -p 32125:8000 -p 32126:9443 --name portainer --restart=always \
 -v /var/run/docker.sock:/var/run/docker.sock \
 -v portainer_data:/data portainer/portainer-ce:latest
 ```
-log on immediate to https://<vm ip>:32126 and create a account and password 
+log on immediately to https://<vm_ip>:32126 and create a account and password 
 because portainer container will be timeout
+
+## build containers
+```bash
+git clone https://github.com/crunchy-devops/noble-puppet.git
+cd noble-puppet
+cd alma
+docker build -t alma-puppet .
+cd ../alpine
+docker build -t alpine-puppet .
+cd ../ubuntu
+docker build -t ubuntu-puppet .
+```
+
 
 ## Start containers 
 ```bash
 # add-host is this internal DNS entry for the puppet server
-docker run --name target1 -d -p 2222:22 --add-host=puppet:10.200.15.207 alma-puppet
-docker run --name target2 -d -p 2223:22 --add-host=puppet:10.200.15.207 alpine-puppet
-docker run --name target3 -d -p 2224:22 --add-host=puppet:10.200.15.207 ubuntu-puppet
+docker run --name target1 -d -p 2222:22 --add-host=puppet:10.200.15.208 alma-puppet
+docker run --name target2 -d -p 2223:22 --add-host=puppet:10.200.15.208 alpine-puppet
+docker run --name target3 -d -p 2224:22 --add-host=puppet:10.200.15.208 ubuntu-puppet
 ```
 
 ## Adding a DNS entry on all containers 
 ```shell
 
 ping -c 3 puppet # Test ping
-puppet agent -t  # Check if it's work fine
+puppet agent -tv # Check if it's work fine
 ```
 ## List of Certificates Authority on server
 ```shell
 # as root on puppet server host
 /usr/bin/puppetserver ca list -a # list all current certificats
+```
+## Sign all certificates
+```shell
+# as root on puppet server host
+/usr/bin/puppetserver ca sign -a
 ```
 
 ## Caveats, useful commands
