@@ -89,9 +89,9 @@ docker build -t ubuntu-puppet .
 ## Start containers 
 ```bash
 # add-host is this internal DNS entry for the puppet server
-docker run --name target1 -d -p 2222:22 --add-host=puppet:10.200.15.208 alma-puppet
-docker run --name target2 -d -p 2223:22 --add-host=puppet:10.200.15.208 alpine-puppet
-docker run --name target3 -d -p 2224:22 --add-host=puppet:10.200.15.208 ubuntu-puppet
+docker run --name target1 -d -p 2222:22 --add-host=puppet:10.200.15.208 --hostname=alma.com alma-puppet
+docker run --name target2 -d -p 2223:22 --add-host=puppet:10.200.15.208 --hostname=alpine.com alpine-puppet
+docker run --name target3 -d -p 2224:22 --add-host=puppet:10.200.15.208 --hostname=ubuntu.com ubuntu-puppet
 ```
 
 ## Adding a DNS entry on all containers 

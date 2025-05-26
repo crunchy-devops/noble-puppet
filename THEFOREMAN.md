@@ -19,3 +19,7 @@ sudo foreman-installer
 hostname -f
 sudo foreman-installer -i
 ```
+## Reset foreman password 
+```bash
+sudo foreman-rake permissions:reset
+```
