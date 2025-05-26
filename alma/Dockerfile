@@ -2,7 +2,7 @@
 FROM almalinux:9
 
 # Set environment variables
-ENV PUPPET_AGENT_VERSION=7.24.0
+ENV PUPPET_AGENT_VERSION=8.10.0
 
 # Install EPEL repository and basic tools
 RUN dnf -y install epel-release && \
@@ -20,7 +20,7 @@ RUN dnf -y install epel-release && \
     && dnf clean all
 
 # Install Puppet agent
-RUN rpm -Uvh https://yum.puppet.com/puppet7-release-el-9.noarch.rpm && \
+RUN rpm -Uvh https://yum.puppet.com/puppet8-release-el-9.noarch.rpm && \
     dnf -y install puppet-agent-${PUPPET_AGENT_VERSION} && \
     dnf clean all
 

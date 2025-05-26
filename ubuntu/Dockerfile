@@ -3,7 +3,7 @@ FROM ubuntu:latest
 
 # Prevent interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
-ENV PUPPET_AGENT_VERSION="7"
+ENV PUPPET_AGENT_VERSION="8"
 
 # Install basic tools and dependencies
 RUN apt-get update && \
@@ -21,12 +21,12 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Puppet agent
-RUN wget https://apt.puppet.com/puppet7-release-$(lsb_release -cs).deb && \
-    dpkg -i puppet7-release-$(lsb_release -cs).deb && \
+RUN wget https://apt.puppet.com/puppet8-release-$(lsb_release -cs).deb && \
+    dpkg -i puppet8-release-$(lsb_release -cs).deb && \
     apt-get update && \
     apt-get install -y --no-install-recommends puppet-agent && \
     rm -rf /var/lib/apt/lists/* && \
-    rm puppet7-release-$(lsb_release -cs).deb
+    rm puppet8-release-$(lsb_release -cs).deb
 
 # Configure SSH
 RUN mkdir -p /var/run/ssh && \

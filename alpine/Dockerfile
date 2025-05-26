@@ -2,7 +2,7 @@
 FROM alpine:3.18
 
 # Set environment variables
-ENV PUPPET_VERSION=7.24.0
+ENV PUPPET_VERSION=8.10.0
 
 # Install basic tools and dependencies
 RUN apk update && \
