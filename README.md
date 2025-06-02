@@ -5,18 +5,20 @@ Noble Puppet is a collection of Dockerfiles for creating containers with Puppet 
 ## install docker and puppetmaster on alma-linux 9
 ```shell
 sudo -s
-
-dnf install htop
+dnf update -y
+dnf install epel-release -y
+dnf install htop -y
 vi /etc/sysconfig/selinux
 setenforce 0
 dnf install https://yum.puppet.com/puppet8-release-el-9.noarch.rpm
 dnf install puppetserver
 vim /etc/sysconfig/puppetserver
-hostnamectl set-hostname puppetmaster.citizix.com
+hostnamectl set-hostname puppetmaster.example.com
 vim /etc/hosts
 hostnamectl
 vim /etc/puppetlabs/puppet/puppet.conf
 systemctl start puppetserver
+systemctl enable puppetserver
 systemctl status puppetserver
 puppetserver -v
 # install docker
@@ -25,10 +27,11 @@ dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce
 dnf install docker-ce docker-ce-cli containerd.io
 systemctl start docker
 systemctl enable docker
+# choose your username
 usermod -aG docker $USER
 ```
 
-## Install Docker on Ubuntu
+## Install Docker on Ubuntu 24.10
 ```shell
 sudo apt update
 sudo apt install -y curl apt-transport-https ca-certificates software-properties-common
